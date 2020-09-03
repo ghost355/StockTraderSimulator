@@ -4,24 +4,23 @@
 import pandas as pd 
 
 
-API_KEY =           "C8V33U8F24NDPC4D"
-QUERY_URL =         "https://www.alphavantage.co/query?function={REQUEST_TYPE}&apikey={KEY}&symbol={SYMBOL}"
-daily = 'TIME_SERIES_DAILY'
-weekly = 'TIME_SERIES_WEEKLY'
+API_KEY     =       "C8V33U8F24NDPC4D"
+QUERY_URL   =       "https://www.alphavantage.co/query?function={REQUEST_TYPE}&apikey={KEY}&symbol={SYMBOL}"
 
-order_list =[]
+daily       =       'TIME_SERIES_DAILY'
+weekly      =       'TIME_SERIES_WEEKLY'
+
+order_list  =       []
 
 
 def pd_request(symbol, req_type, extra):
     
-   data = pd.read_csv(QUERY_URL.format(REQUEST_TYPE=req_type, KEY=API_KEY, SYMBOL=symbol) + extra) 
+    data = pd.read_csv(QUERY_URL.format(REQUEST_TYPE=req_type, KEY=API_KEY, SYMBOL=symbol) + extra)
+    
+    return data
 
+def start():
 
-   return data
-
-
- 
-def start():    
     while 1:
         try:
     
@@ -49,11 +48,11 @@ def start():
             print ('\nSomething went wrong, try other symbol, please')
         
         
-    return (df,symbol,df21,df50,df200)
+    return (df, symbol, df21, df50, df200) #таблица котировок, имя символа, таблицы средних по дням 21/50/200
     
 
 
-def date_query(df):       
+def date_query(df):       # запрос начальной даты и вывод нужного диапазона  таблицы котировок
     while 1:
         try:
             first = df.iloc[0]['timestamp']
@@ -175,6 +174,17 @@ def check_order(price, low, high):
         return True
     else:
         return False
+
+def is_digit(string):
+    if string.isdigit():
+       return True
+    else:
+        try:
+            float(string)
+            return True
+        except ValueError:
+            return False
+
     
 def buy_action():
 
@@ -182,7 +192,7 @@ def buy_action():
     
     while 1:
         buy_price = input("Price:\t\t")
-        if buy_price.isdigit():
+        if is_digit(buy_price):
             break
         else:
             print ("Only positive digits please, try again")
@@ -197,7 +207,7 @@ def buy_action():
     
     while 1:
         buy_stop = input ("Stop-price:\t")
-        if buy_stop.isdigit():
+        if is_digit(buy_stop):
             break
         else:
             print ("Only positive digits please, try again")
@@ -210,7 +220,7 @@ def sell_action():
     print("///SELL///\n")
     while 1:
         sell_price = input("Price:\t\t")
-        if sell_price.isdigit():
+        if is_digit(sell_price):
             break
         else:
             print ("Only positive number please, try again")
@@ -243,7 +253,7 @@ def change_action():
         answer = input ('Input number of order you want to change/remove. Press ‘Enter’ to back : ')
         try:
             if answer == '':
-                return print('Nothing changed')
+                return print(' /// Backing... /// ')
                 
             elif int(answer) in number_list:
                 change_order_process(order_list, int(answer))
@@ -305,7 +315,7 @@ def drawline (char, len):
     s =  '{:' + char + '^' + str(len)  + '}'
     return print (s.format('') )
 
-def main (order_list,money):
+def main (order_list,money, msg_lst):
 
     for m in msg_lst:
 
@@ -364,14 +374,22 @@ def main (order_list,money):
 print ("\n\nStarting ...\n\n")
 drawline ('*', 80) 
 
-symb_data = start() 
-symbol = symb_data[1]
-data = symb_data[0]
-ema21 = symb_data[2]
-sma50 = symb_data[3]
-sma200 = symb_data[4]
-df = date_query(data)
-money = capital_query()
-msg_lst = quotes_msg(df,symbol, ema21, sma50, sma200)
+symb_data = start() # получение данных о символе
 
-main(order_list,money)
+symbol = symb_data[1] # имя символа
+
+data = symb_data[0] # таблица данных котировок
+
+ema21 = symb_data[2] # таблица данных EMA21
+
+sma50 = symb_data[3] # таблица данных SMA50
+
+sma200 = symb_data[4] # таблица данных SMA200
+
+df = date_query(data) # обработанная таблица данных для вывода с нужного дня 
+
+money = capital_query() # начальный баланс средств
+
+msg_lst = quotes_msg(df,symbol, ema21, sma50, sma200) #список "телеграм" (форм. вывод из таблиц данных)
+
+main(order_list,money, msg_lst) # основной процесс вывода телеграм построчно и меню с обработкой действий
