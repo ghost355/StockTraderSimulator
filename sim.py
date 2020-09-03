@@ -132,7 +132,7 @@ def quotes_msg(df,symbol,df21,df50,df200):
         e21 = 0 if ema21 == 0 else close-ema21
         
             
-        msg = '   {}  {}   {:.2f} ({:.2f} - {:.2f}) / {:.2f}M   \n \t\t  (change: {:.1f}%/{:.2f}  size: {:.0f} range: {:.0f}%  MA: {:.0f}/{:.0f}/{:.0f})'.format(
+        msg = '   {}  {}   {:.2f} ({:.2f} - {:.2f}) / {:.2f}M   \n \t\t    (change: {:.1f}%/{:.2f}  size: {:.0f} range: {:.0f}%  MA: {:.0f}/{:.0f}/{:.0f})'.format(
                 date, symbol,close, high, low,volume/1000000, (close/prev_close-1)*100,close-prev_close,round(high-low),round(100*(close-low)/(high-low)),e21,s50,s200)
         
         msg_list.append([msg,(high,low,close)])
@@ -259,11 +259,11 @@ def change_action():
         answer = input ('Input number of the order you want to change/remove. Press ‘Enter’ to back : ')
         try:
             if answer == '':
-                return print(' /// Backing... /// ')
+                return print('\n /// Backing... /// \n')
                 
             elif int(answer) in number_list:
                 change_order_process(order_list, int(answer))
-                return print ('Changing complete!')
+                return print ('\nChanging complete!\n')
                 
             else:
                 print('\nWrong order number, try again')
@@ -323,7 +323,7 @@ def drawline (char, len):
 
 def check_orders_done (order_list,money,m):
 
-    
+    # comment
 
     if len(order_list) != 0:
         temp_order_list = []
@@ -344,8 +344,9 @@ def check_orders_done (order_list,money,m):
                     
                     
 
-                    print ("\n   /// Order complete ///. Bought {} {} at {}  ///\n\n".format(i[1],symbol,i[0]))
-                    print ("\t\tStop-order activated to sell {} at {}\n\n".format(i[1],i[2]))
+                    print ("\n\t /// Order complete! ///\n")
+                    print ("\t - Bought {} {} at {}\n".format(i[1],symbol,i[0]))
+                    print ("\t - Stop-order activated to sell {} at {}!\n\n".format(i[1],i[2]))
 
                     
 
@@ -398,18 +399,19 @@ days = 1
 
 for m in msg_lst:
 
+    print('\n\n\n')
+    drawline ('.', 80) 
+
+    print('\n', m[0])
+
+    drawline ('.', 80)
+
     check = check_orders_done (order_list,money, m)
     order_list = check[0]
     money = check[1]
     
-    drawline ('.', 80) 
 
-    print('\n', m[0], '\n')
-
-    drawline ('.', 80)
-
-
-    print ('Cache: {}  Orders: {}  Days:  {}'.format(money, len(order_list), days))
+    print ('Cache: {}  Orders: {}  Days:  {}   Weeks:  {}'.format(money, len(order_list), days, int(days/5)))
 
     action_query(m[0])
 
