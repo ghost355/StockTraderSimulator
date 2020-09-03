@@ -144,7 +144,7 @@ def quotes_msg(df,symbol,df21,df50,df200):
             
 
         
-def action_query():
+def action_query(m):
     
         
         
@@ -160,6 +160,12 @@ def action_query():
             
             elif action == 'o':
                 change_action()
+
+                drawline ('.', 80) 
+
+                print('\n', m, '\n')
+
+                drawline ('.', 80)
             
             elif action == '':
                 break
@@ -250,7 +256,7 @@ def change_action():
     drawline ('-',30)
     while 1:
         
-        answer = input ('Input number of order you want to change/remove. Press ‘Enter’ to back : ')
+        answer = input ('Input number of the order you want to change/remove. Press ‘Enter’ to back : ')
         try:
             if answer == '':
                 return print(' /// Backing... /// ')
@@ -315,43 +321,44 @@ def drawline (char, len):
     s =  '{:' + char + '^' + str(len)  + '}'
     return print (s.format('') )
 
-def check_orders_done (order_list,money):
+def check_orders_done (order_list,money,m):
 
-    for m in msg_lst:
+    
 
-        if len(order_list) != 0:
-            temp_order_list = []
-            order_list_copy=order_list.copy()
+    if len(order_list) != 0:
+        temp_order_list = []
+        order_list_copy=order_list.copy()
 
-            for x in order_list:
-                
-                i = order_list_copy.pop()  
-
-                if check_order (i[0],m[1][1],m[1][0]):
-                    sum = i[0] * i[1]
-                    
-                    if i[3] == 'buy':
-                        money = money - sum
-                        temp_order_list.append([i[2],i[1],0,'sell'])
-                    
-                        
-                       
-
-                        print ("\n   /// Order complete ///. Bought {} {} at {}  ///\n\n".format(i[1],symbol,i[0]))
-                        print ("\t\tStop-order activated to sell {} at {}\n\n".format(i[1],i[0]))
-
-                        
-
-                    elif i[3] == 'sell':
-                        money = money + sum
-                        
-                        print ("\n   /// Order complete. Sold {} {} at {}  ///\n\n".format(i[1],symbol,i[0]))
-                       
-                else:
-                    temp_order_list.append(i)
-                    
+        for x in order_list:
             
-            order_list = temp_order_list
+            i = order_list_copy.pop()  
+
+            if check_order (i[0],m[1][1],m[1][0]): #price low high
+                sum = i[0] * i[1]
+                
+                if i[3] == 'buy':
+                    print (i)
+                    money = money - sum
+                    temp_order_list.append([i[2],i[1],0,'sell'])
+                
+                    
+                    
+
+                    print ("\n   /// Order complete ///. Bought {} {} at {}  ///\n\n".format(i[1],symbol,i[0]))
+                    print ("\t\tStop-order activated to sell {} at {}\n\n".format(i[1],i[2]))
+
+                    
+
+                elif i[3] == 'sell':
+                    money = money + sum
+                    
+                    print ("\n   /// Order complete. Sold {} {} at {}  ///\n\n".format(i[1],symbol,i[0]))
+                    
+            else:
+                temp_order_list.append(i)
+                
+        
+        order_list = temp_order_list
     
     return [order_list,money]
 
@@ -391,7 +398,7 @@ days = 1
 
 for m in msg_lst:
 
-    check = check_orders_done (order_list,money)
+    check = check_orders_done (order_list,money, m)
     order_list = check[0]
     money = check[1]
     
@@ -404,6 +411,6 @@ for m in msg_lst:
 
     print ('Cache: {}  Orders: {}  Days:  {}'.format(money, len(order_list), days))
 
-    action_query()
+    action_query(m[0])
 
     days = days + 1
