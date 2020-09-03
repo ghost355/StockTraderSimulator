@@ -331,6 +331,7 @@ for m in msg_lst:
     if len(order_list) != 0:
         temp_order_list = []
         order_list_copy=order_list.copy()
+        
         for x in order_list:
             
             i = order_list_copy.pop()  
@@ -344,8 +345,10 @@ for m in msg_lst:
                    
                     
                     drawline ('=',20)
+
                     print ("\nOrder complete. Bought {} {} at {}\n".format(i[1],symbol,i[0]))
                     print ("Stop-order activated to sell {} at {}\n\n".format(i[1],i[0]))
+
                     drawline ('=',20)
 
                 elif i[3] == 'sell':
@@ -362,9 +365,12 @@ for m in msg_lst:
                     
     
     drawline ('.', 80) 
+
     print('\n', m[0], '\n')
-    drawline ('.', 80) 
+    drawline ('.', 80)
+
     
     print ('Cache: {}  Orders: {}'.format(money, len(order_list)))
+
     action_query()
 
