@@ -323,7 +323,7 @@ def drawline (char, len):
 
 def check_orders_done (order_list,money,m):
 
-    # comment
+    
 
     if len(order_list) != 0:
         temp_order_list = []
