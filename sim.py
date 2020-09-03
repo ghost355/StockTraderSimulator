@@ -188,7 +188,7 @@ def is_digit(string):
     
 def buy_action():
 
-    print("///BUY///\n")
+    print(" /// BUY ///\n")
     
     while 1:
         buy_price = input("Price:\t\t")
@@ -217,7 +217,7 @@ def buy_action():
     return [float(buy_price), int(buy_amount), float(buy_stop), 'buy']
 
 def sell_action():
-    print("///SELL///\n")
+    print(" /// SELL ///\n")
     while 1:
         sell_price = input("Price:\t\t")
         if is_digit(sell_price):
@@ -272,7 +272,7 @@ def change_order_process(order_list, answer):
     while 1:
         action = input ('\nYou chose to change order /// [{}]  {}  {} at {}  ///\n\nWhat do you want to change (\'p\'-price, \'a\'-amount, \'r\'-remove, \'Enter\' for cancel:    '.format(answer,order[3].upper(),order[1],order[0]))
         if action == '':
-            return print ('Nothing changed')
+            return print ('\n')
         
         elif action == 'r':
             order_list.remove(order_list[answer-1])
@@ -297,7 +297,7 @@ def change_order_process(order_list, answer):
                 new_amount = int(input ('Input new amount:    '))
                 if new_amount > 0:
                     order[1] = new_amount
-                    print ('\nCheck your new order >>>  {} {} {} at {}'.format(order[3],order[1],symbol,order[0]))
+                    print ('\nCheck your new order!  ///  {} {} {} at {}   ///\n\n'.format(order[3],order[1],symbol,order[0]))
                     break
                 
                 else:    
@@ -335,18 +335,18 @@ def check_orders_done (order_list,money):
                         temp_order_list.append([i[2],i[1],0,'sell'])
                     
                         
-                        drawline ('+',30)
+                       
 
-                        print ("\n   /// Order complete ///. Bought {} {} at {}  ///\n".format(i[1],symbol,i[0]))
-                        print ("Stop-order activated to sell {} at {}\n\n".format(i[1],i[0]))
+                        print ("\n   /// Order complete ///. Bought {} {} at {}  ///\n\n".format(i[1],symbol,i[0]))
+                        print ("\t\tStop-order activated to sell {} at {}\n\n".format(i[1],i[0]))
 
-                        drawline ('+',30)
+                        
 
                     elif i[3] == 'sell':
                         money = money + sum
-                        drawline ('+',30)
-                        print ("\n   /// Order complete. Sold {} {} at {}  ///\n".format(i[1],symbol,i[0]))
-                        drawline ('+',30)
+                        
+                        print ("\n   /// Order complete. Sold {} {} at {}  ///\n\n".format(i[1],symbol,i[0]))
+                       
                 else:
                     temp_order_list.append(i)
                     
