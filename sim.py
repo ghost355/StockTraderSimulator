@@ -315,7 +315,7 @@ def drawline (char, len):
     s =  '{:' + char + '^' + str(len)  + '}'
     return print (s.format('') )
 
-def main (order_list,money, msg_lst):
+def check_orders_done (order_list,money):
 
     for m in msg_lst:
 
@@ -352,19 +352,10 @@ def main (order_list,money, msg_lst):
                     
             
             order_list = temp_order_list
-                
-                    
     
-    drawline ('.', 80) 
+    return [order_list,money]
 
-    print('\n', m[0], '\n')
 
-    drawline ('.', 80)
-
-    
-    print ('Cache: {}  Orders: {}'.format(money, len(order_list)))
-
-    action_query()
 
       
         
@@ -392,4 +383,21 @@ money = capital_query() # начальный баланс средств
 
 msg_lst = quotes_msg(df,symbol, ema21, sma50, sma200) #список "телеграм" (форм. вывод из таблиц данных)
 
-main(order_list,money, msg_lst) # основной процесс вывода телеграм построчно и меню с обработкой действий
+ # основной процесс вывода телеграм построчно и меню с обработкой действий
+
+for m in msg_lst:
+
+    check = check_orders_done (order_list,money)
+    order_list = check[0]
+    money = check[1]
+    
+    drawline ('.', 80) 
+
+    print('\n', m[0], '\n')
+
+    drawline ('.', 80)
+
+
+    print ('Cache: {}  Orders: {}'.format(money, len(order_list)))
+
+    action_query()
