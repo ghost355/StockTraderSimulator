@@ -362,7 +362,9 @@ def check_orders_done (order_list,money):
         
 # ============= START ================= 
 
-print ("\n\nStarting ...\n\n")
+print ('\n'*100)
+drawline ('*', 80) 
+print ("\n\n\t\tStock Trade Simulator by P.Pavlov 2020\n\n")
 drawline ('*', 80) 
 
 symb_data = start() # получение данных о символе
