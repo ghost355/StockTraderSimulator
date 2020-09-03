@@ -304,8 +304,59 @@ def add_order(list,order):
 def drawline (char, len):
     s =  '{:' + char + '^' + str(len)  + '}'
     return print (s.format('') )
+
+def main (order_list,money):
+
+    for m in msg_lst:
+
+        if len(order_list) != 0:
+            temp_order_list = []
+            order_list_copy=order_list.copy()
+
+            for x in order_list:
+                
+                i = order_list_copy.pop()  
+
+                if check_order (i[0],m[1][1],m[1][0]):
+                    sum = i[0] * i[1]
+                    
+                    if i[3] == 'buy':
+                        money = money - sum
+                        temp_order_list.append([i[2],i[1],0,'sell'])
+                    
+                        
+                        drawline ('=',20)
+
+                        print ("\nOrder complete. Bought {} {} at {}\n".format(i[1],symbol,i[0]))
+                        print ("Stop-order activated to sell {} at {}\n\n".format(i[1],i[0]))
+
+                        drawline ('=',20)
+
+                    elif i[3] == 'sell':
+                        money = money + sum
+                        drawline ('=',20)
+                        print ("\nOrder complete. Sold {} {} at {}\n".format(i[1],symbol,i[0]))
+                        drawline ('=',20)
+                else:
+                    temp_order_list.append(i)
+                    
             
-        
+            order_list = temp_order_list
+                
+                    
+    
+    drawline ('.', 80) 
+
+    print('\n', m[0], '\n')
+
+    drawline ('.', 80)
+
+    
+    print ('Cache: {}  Orders: {}'.format(money, len(order_list)))
+
+    action_query()
+
+      
         
         
 # ============= START ================= 
@@ -313,7 +364,7 @@ def drawline (char, len):
 print ("\n\nStarting ...\n\n")
 drawline ('*', 80) 
 
-symb_data = start()
+symb_data = start() 
 symbol = symb_data[1]
 data = symb_data[0]
 ema21 = symb_data[2]
@@ -323,54 +374,4 @@ df = date_query(data)
 money = capital_query()
 msg_lst = quotes_msg(df,symbol, ema21, sma50, sma200)
 
-
-    
-for m in msg_lst:
-    
-    
-    if len(order_list) != 0:
-        temp_order_list = []
-        order_list_copy=order_list.copy()
-        
-        for x in order_list:
-            
-            i = order_list_copy.pop()  
-
-            if check_order (i[0],m[1][1],m[1][0]):
-                sum = i[0] * i[1]
-                
-                if i[3] == 'buy':
-                    money = money - sum
-                    temp_order_list.append([i[2],i[1],0,'sell'])
-                   
-                    
-                    drawline ('=',20)
-
-                    print ("\nOrder complete. Bought {} {} at {}\n".format(i[1],symbol,i[0]))
-                    print ("Stop-order activated to sell {} at {}\n\n".format(i[1],i[0]))
-
-                    drawline ('=',20)
-
-                elif i[3] == 'sell':
-                    money = money + sum
-                    drawline ('=',20)
-                    print ("\nOrder complete. Sold {} {} at {}\n".format(i[1],symbol,i[0]))
-                    drawline ('=',20)
-            else:
-                 temp_order_list.append(i)
-                 
-        
-        order_list = temp_order_list
-               
-                    
-    
-    drawline ('.', 80) 
-
-    print('\n', m[0], '\n')
-    drawline ('.', 80)
-
-    
-    print ('Cache: {}  Orders: {}'.format(money, len(order_list)))
-
-    action_query()
-
+main(order_list,money)
