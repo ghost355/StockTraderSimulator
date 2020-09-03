@@ -335,18 +335,18 @@ def check_orders_done (order_list,money):
                         temp_order_list.append([i[2],i[1],0,'sell'])
                     
                         
-                        drawline ('=',20)
+                        drawline ('+',30)
 
-                        print ("\nOrder complete. Bought {} {} at {}\n".format(i[1],symbol,i[0]))
+                        print ("\n   /// Order complete ///. Bought {} {} at {}  ///\n".format(i[1],symbol,i[0]))
                         print ("Stop-order activated to sell {} at {}\n\n".format(i[1],i[0]))
 
-                        drawline ('=',20)
+                        drawline ('+',30)
 
                     elif i[3] == 'sell':
                         money = money + sum
-                        drawline ('=',20)
-                        print ("\nOrder complete. Sold {} {} at {}\n".format(i[1],symbol,i[0]))
-                        drawline ('=',20)
+                        drawline ('+',30)
+                        print ("\n   /// Order complete. Sold {} {} at {}  ///\n".format(i[1],symbol,i[0]))
+                        drawline ('+',30)
                 else:
                     temp_order_list.append(i)
                     
@@ -385,6 +385,8 @@ msg_lst = quotes_msg(df,symbol, ema21, sma50, sma200) #список "телег�
 
  # основной процесс вывода телеграм построчно и меню с обработкой действий
 
+days = 0
+
 for m in msg_lst:
 
     check = check_orders_done (order_list,money)
@@ -398,6 +400,8 @@ for m in msg_lst:
     drawline ('.', 80)
 
 
-    print ('Cache: {}  Orders: {}'.format(money, len(order_list)))
+    print ('Cache: {}  Orders: {}  Days:  {}'.format(money, len(order_list), days))
 
     action_query()
+
+    days = days + 1
